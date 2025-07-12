@@ -37,7 +37,7 @@ app.get('/',(req,res)=>{
 })
 
 
-app.post("/webhooks",webh)
+app.post("/webhooks", express.raw({ type: 'application/json' }), webh);
 
 
 
