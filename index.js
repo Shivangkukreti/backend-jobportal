@@ -26,7 +26,7 @@ app.use(cors())
 
 
 
-app.post("/webhooks", express.raw({ type: 'application/json' }), webh);
+app.post("/webhooks", webh);
 
 
 
