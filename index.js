@@ -22,7 +22,7 @@ const clerkweb =require('./config/webhooks.js')
 
 const PORT=process.env.PORT || 5000
 app.use(cors())
-
+app.use(express.json())
 
 
 
@@ -31,7 +31,7 @@ app.post("/webhooks", clerkweb);
 
 
 
-app.use(express.json())
+
 app.listen(PORT,()=>{
     console.log(`http://localhost:${PORT}/`);
     
