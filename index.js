@@ -1,49 +1,49 @@
-require('./config/instrument.js')
+require('dotenv').config();
+require('./config/instrument.js');
 const Sentry = require("@sentry/node");
-const express= require('express')
-const app =express()
-const cors=require('cors')
-require('dotenv').config()
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
+const app = express();
+const PORT = process.env.PORT || 5000;
+const uri = process.env.MONGO_URL;
 
-const  mongoose=require('mongoose')
-const uri=process.env.MONGO_URL
-
-
-main().then(()=>{
-    console.log('done');
-}).catch((err)=>{
+// MongoDB connection
+main().then(() => {
+    console.log('Connected to MongoDB');
+}).catch((err) => {
     console.log(err);
-})
+});
 async function main() {
     await mongoose.connect(uri);
 }
 
-const webh=require('./config/webhooks.js')
+// Clerk webhook controller
+const webh = require('./config/webhooks.js');
 
-const PORT=process.env.PORT || 5000
+// CORS
+app.use(cors());
 
-
-app.use(cors())
-app.use(express.json())
-app.listen(PORT,()=>{
-    console.log(`http://localhost:${PORT}/`);
-    
-})
-
-
-app.get('/',(req,res)=>{
-    res.send('working')
-})
-
-
+// ✅ Use raw body ONLY for webhook verification
 app.post("/webhooks", express.raw({ type: 'application/json' }), webh);
 
+// ✅ Use JSON body parser for all other routes
+app.use(express.json());
 
-
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
+// Sample routes
+app.get('/', (req, res) => {
+    res.send('working');
 });
 
+app.get("/debug-sentry", function mainHandler(req, res) {
+    throw new Error("My first Sentry error!");
+});
 
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}/`);
+});
+
+// Optional: setup Sentry error handler (must be after all routes)
 Sentry.setupExpressErrorHandler(app);
