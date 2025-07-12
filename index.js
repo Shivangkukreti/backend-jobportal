@@ -4,10 +4,9 @@ const express= require('express')
 const app =express()
 const cors=require('cors')
 require('dotenv').config()
-const webh=require('./config/webhooks.js')
+
 const  mongoose=require('mongoose')
 const uri=process.env.MONGO_URL
-
 
 main().then(()=>{
     console.log('done');
@@ -16,20 +15,13 @@ main().then(()=>{
 })
 async function main() {
     await mongoose.connect(uri);
+
 }
 
-
+const webh=require('./config/webhooks.js')
 
 const PORT=process.env.PORT || 5000
-
-
 app.use(cors())
-app.use(express.json())
-app.listen(PORT,()=>{
-    console.log(`http://localhost:${PORT}/`);
-    
-})
-
 
 app.get('/',(req,res)=>{
     res.send('working')
@@ -37,6 +29,17 @@ app.get('/',(req,res)=>{
 
 
 app.post("/webhooks", webh);
+
+
+
+
+app.use(express.json())
+app.listen(PORT,()=>{
+    console.log(`http://localhost:${PORT}/`);
+    
+})
+
+
 
 
 
