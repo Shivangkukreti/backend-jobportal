@@ -18,7 +18,7 @@ async function main() {
 
 }
 
-const webh=require('./config/webhooks.js')
+const clerkweb =require('./config/webhooks.js')
 
 const PORT=process.env.PORT || 5000
 app.use(cors())
@@ -26,7 +26,7 @@ app.use(cors())
 
 
 
-app.post("/webhooks", webh);
+app.post("/webhooks", clerkweb);
 
 
 
