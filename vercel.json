@@ -8,13 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/webhooks",
-      "dest": "/index.js",
-      "methods": ["POST"]
-    },
-    {
-      "src": "/.*",
-      "dest": "/index.js"
+      "src": "/(.*)",
+      "dest": "index.js"
     }
   ]
 }
