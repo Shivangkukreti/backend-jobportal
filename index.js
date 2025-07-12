@@ -1,51 +1,18 @@
-require('./config/instrument.js')
-const Sentry = require("@sentry/node");
-const express= require('express')
-const app =express()
-const cors=require('cors')
-require('dotenv').config()
+const express = require('express');
+const app = express();
+const webh = require('./config/webhooks.js');
+const cors = require('cors');
 
-const  mongoose=require('mongoose')
-const uri=process.env.MONGO_URL
+// ✅ Allow CORS
+app.use(cors());
 
-main().then(()=>{
-    console.log('done');
-}).catch((err)=>{
-    console.log(err);
-})
-async function main() {
-    await mongoose.connect(uri);
+// ✅ Use raw ONLY for the /webhooks route
+app.post("/webhooks", express.raw({ type: 'application/json' }), webh);
 
-}
+// ✅ Use JSON for all other routes
+app.use(express.json());
 
-const webh=require('./config/webhooks.js')
-
-const PORT=process.env.PORT || 5000
-app.use(cors())
-
-app.get('/',(req,res)=>{
-    res.send('working')
-})
-
-
-app.post("/webhooks", webh);
-
-
-
-
-app.use(express.json())
-app.listen(PORT,()=>{
-    console.log(`http://localhost:${PORT}/`);
-    
-})
-
-
-
-
-
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
+// ✅ Your test route
+app.get('/', (req, res) => {
+  res.send('working');
 });
-
-
-Sentry.setupExpressErrorHandler(app);
