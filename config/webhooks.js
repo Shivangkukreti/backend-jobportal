@@ -16,7 +16,7 @@ module.exports = async function clerkweb(req, res) {
         switch (type) {
             case 'user.created': {
                 const userData = {
-                    id: data.id,
+                    _id: data.id,
                     email: data.email_addresses[0].email_address,
                     name: `${data.first_name} ${data.last_name}`,
                     image: data.image_url,
@@ -33,13 +33,13 @@ module.exports = async function clerkweb(req, res) {
                     name: `${data.first_name} ${data.last_name}`,
                     image: data.image_url
                 };
-                await user.findOneAndUpdate({ id: data.id }, userData);
+                await user.findOneAndUpdate({ _id: data.id }, userData);
                 res.json({});
                 break;
             }
 
             case 'user.deleted': {
-                await user.findOneAndDelete({ id: data.id });
+                await user.findOneAndDelete({ _id: data.id });
                 res.json({});
                 break;
             }

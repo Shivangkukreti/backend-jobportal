@@ -3,7 +3,7 @@ const Schema=mongoose.Schema
 
 
 let usersch= new Schema({
-    id:{type:String,required:true},
+    _id:{type:String,required:true},
     name:{type:String,required:true},
     email:{type:String,required:true,unique:true},
     resume:{type:String},
