@@ -19,10 +19,9 @@ async function main() {
 
 router.get('/',async(req,res)=>{
 let userid =  req.auth.userId;
- 
+
 try {
-   let myuser=await user.findById(userid) 
-   
+   let myuser=await user.findById(userid)  
    if (!myuser) {
     return res.json({success:false,message:'no such user!'})
    }
@@ -37,6 +36,10 @@ try {
 router.post('/apply',async(req,res)=>{
     let {jobid}=req.body
     let userid= req.auth.userId;
+    let myuser=await user.findById(userid)
+    if (! myuser.resume) {
+        return res.json({success:false})
+    }
     
     try {
         let isapplied =await jobapplication.find({userid,jobid})
