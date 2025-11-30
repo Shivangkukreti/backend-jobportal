@@ -8,6 +8,8 @@ let jobappsch=new Schema({
     status:{default:'Pending',type:String},
 })
 
+
+
 let jobapplication=mongoose.model('jobaaplication',jobappsch)
 module.exports=jobapplication
 

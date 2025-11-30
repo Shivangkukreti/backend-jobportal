@@ -8,7 +8,7 @@ module.exports = async function clerkweb(req, res) {
         await whook.verify(JSON.stringify(req.body), {
             'svix-id': req.headers['svix-id'],
             'svix-timestamp': req.headers['svix-timestamp'],
-            'svix-signature': req.headers['svix-signature'], // fixed typo: 'svisignature'
+            'svix-signature': req.headers['svix-signature'], 
         });
 
         const { data, type } = req.body;
